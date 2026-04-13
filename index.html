@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonis Iftimi Piano</title>
+  <link rel="icon" href="imgs/favicon.png" type="image/png" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #000000;
+      --bg-soft: #FFF5E5;
+      --gold: #EA8F2C;
+      --gold-soft: #FFC362;
+      --gold-pale: #FFDCA4;
+      --brown: #774900;
+      --ink: #1A1A1A;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: white;
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    .container-premium {
+      width: min(1280px, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    @media (min-width: 768px) {
+      .container-premium {
+        width: min(1280px, calc(100% - 5rem));
+      }
+    }
+
+    .section-kicker {
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--gold);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1;
+      font-weight: 300;
+      letter-spacing: -0.03em;
+    }
+
+    .glass-nav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1120px, calc(100% - 1rem));
+      z-index: 60;
+      background: rgba(10, 10, 10, 0.64);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+      transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .nav-link {
+      position: relative;
+      color: rgba(255, 220, 164, 0.86);
+      transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.55rem;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.35s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      transform: scaleX(1);
+    }
+
+    .hero-gradient {
+      background:
+        radial-gradient(circle at 78% 24%, rgba(234, 143, 44, 0.16), transparent 24%),
+        radial-gradient(circle at 16% 84%, rgba(255, 195, 98, 0.10), transparent 22%),
+        linear-gradient(90deg, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.70) 34%, rgba(0,0,0,0.44) 58%, rgba(0,0,0,0.58) 100%);
+    }
+
+    .hero-backdrop {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .hero-backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.28) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.74) 0%, rgba(0,0,0,0.42) 38%, rgba(0,0,0,0.55) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-image {
+      transform: scale(1.04);
+      animation: heroFloat 12s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: scale(1.04) translate3d(0,0,0); }
+      50% { transform: scale(1.07) translate3d(-10px, 8px, 0); }
+    }
+
+    .hero-copy > * {
+      opacity: 0;
+      transform: translateY(26px);
+      animation: riseIn 0.9s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    .hero-copy > *:nth-child(1) { animation-delay: 0.12s; }
+    .hero-copy > *:nth-child(2) { animation-delay: 0.2s; }
+    .hero-copy > *:nth-child(3) { animation-delay: 0.28s; }
+    .hero-copy > *:nth-child(4) { animation-delay: 0.36s; }
+    .hero-copy > *:nth-child(5) { animation-delay: 0.44s; }
+    .hero-copy > *:nth-child(6) { animation-delay: 0.52s; }
+
+    @keyframes riseIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cta-primary,
+    .cta-secondary {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    .cta-primary:hover,
+    .cta-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .cta-primary::after,
+    .cta-secondary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 45%, transparent 100%);
+      transform: translateX(-120%);
+      transition: transform 0.6s ease;
+    }
+
+    .cta-primary:hover::after,
+    .cta-secondary:hover::after {
+      transform: translateX(120%);
+    }
+
+    .service-card,
+    .portfolio-card,
+    .contact-card {
+      transition: transform 0.45s cubic-bezier(.22,1,.36,1), box-shadow 0.45s ease, border-color 0.35s ease;
+    }
+
+    .service-card:hover,
+    .portfolio-card:hover,
+    .contact-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 44px rgba(32, 20, 4, 0.14);
+    }
+
+    .service-image,
+    .portfolio-image {
+      transition: transform 0.7s cubic-bezier(.22,1,.36,1), filter 0.5s ease;
+    }
+
+    .service-card:hover .service-image,
+    .portfolio-card:hover .portfolio-image {
+      transform: scale(1.06);
+      filter: saturate(1.02);
+    }
+
+    .service-overlay,
+    .portfolio-overlay {
+      transition: opacity 0.35s ease;
+    }
+
+    .service-card:hover .service-overlay,
+    .portfolio-card:hover .portfolio-overlay {
+      opacity: 1;
+    }
+
+    .play-badge {
+      transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .portfolio-card:hover .play-badge {
+      transform: scale(1.08);
+      background: rgba(234, 143, 44, 0.82);
+      border-color: rgba(255, 255, 255, 0.26);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form-line {
+      transition: border-color 0.3s ease, transform 0.25s ease;
+    }
+
+    .form-line:focus {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .footer-link {
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+
+    .footer-link:hover {
+      color: white;
+      transform: translateX(3px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-image,
+      .hero-copy > *,
+      .reveal,
+      .nav-link,
+      .service-card,
+      .portfolio-card,
+      .contact-card,
+      .cta-primary,
+      .cta-secondary {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="glass-nav rounded-full px-4 md:px-7 py-4">
+    <div class="flex items-center justify-between gap-6">
+      <a href="#inicio" class="text-[0.72rem] md:text-xs tracking-[0.34em] uppercase text-[#FFC362] whitespace-nowrap">Adonis Iftimi</a>
+
+      <nav id="mainNav" class="hidden md:flex items-center gap-8 text-[0.92rem] font-light tracking-wide">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#actuaciones" class="nav-link">Servicios</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </nav>
+
+      <a href="#contacto" class="hidden md:inline-flex items-center gap-2 text-sm text-[#FFDCA4] hover:text-white transition">
+        Reservas
+        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </header>
+
+  <section id="inicio" class="relative min-h-screen bg-black text-white overflow-hidden">
+    <div class="hero-backdrop">
+      <img src="imgs/hero_img.png" alt="Adonis Iftimi al piano" class="hero-image absolute inset-0 h-full w-full object-cover object-center md:object-[center_28%]">
+      <div class="absolute inset-0 hero-gradient z-[2]"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex items-center">
+      <div class="container-premium w-full pt-36 pb-16 sm:pt-40 md:pt-44 md:pb-24">
+        <div class="hero-copy max-w-[720px] px-5 sm:px-8 md:px-12 lg:px-16">
+          <p class="section-kicker mb-6">Piano en directo · Bodas · Eventos · Galas</p>
+          <h1 class="text-[3rem] leading-[0.92] sm:text-[4.7rem] lg:text-[6.2rem] font-[300] tracking-[-0.06em] text-[#FFC362]">ADONIS<br>IFTIMI</h1>
+          <p class="mt-4 text-lg md:text-2xl font-light italic text-[#FFDCA4]">Pianista</p>
+          <div class="mt-8 h-px w-24 bg-gradient-to-r from-[#EA8F2C] to-transparent"></div>
+          <p class="mt-8 max-w-xl text-base md:text-lg leading-8 text-[#F5DFC0]/88 font-light">
+            Soy Adonis, pianista de 20 años, y llevo toda mi vida dedicada a la música.
+            Formado en el Conservatorio de Manresa, entiendo cada interpretación como una forma
+            de crear atmósferas elegantes, emocionales y memorables.
+          </p>
+
+          <div class="mt-10 flex flex-col sm:flex-row gap-4">
+            <a href="#contacto" class="cta-primary inline-flex items-center justify-center rounded-full border border-[#EA8F2C] bg-[#EA8F2C] px-7 py-3.5 text-sm tracking-wide text-white">
+              Solicitar actuación
+            </a>
+            <a href="#portfolio" class="cta-secondary inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm tracking-wide text-[#FFE2B0]">
+              Ver portfolio
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:flex flex-col items-center gap-3 text-[#FFDCA4]/75">
+      <span class="text-[0.65rem] tracking-[0.35em] uppercase">Scroll</span>
+      <div class="h-14 w-px bg-gradient-to-b from-[#EA8F2C] to-transparent animate-pulse"></div>
+    </div>
+  </section>
+
+  <section id="actuaciones" class="bg-[#FFF5E5] py-24 md:py-32">
+    <div class="container-premium">
+      <div class="reveal grid gap-14 lg:grid-cols-[1fr_1.2fr] lg:items-end mb-14 md:mb-16">
+        <div class="max-w-xl">
+          <p class="section-kicker mb-4">Servicios</p>
+          <h2 class="section-title text-[#774900]">Actuaciones pensadas para cada ocasión.</h2>
+        </div>
+        <p class="text-base md:text-lg leading-8 text-black/75 font-light max-w-2xl lg:justify-self-end">
+          Ofrezco actuaciones de piano en directo para distintos tipos de eventos, adaptándome siempre al ambiente,
+          al ritmo de la celebración y al carácter de cada espacio para construir una experiencia cuidada y memorable.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-7">
+        <article class="service-card reveal rounded-[1.8rem] overflow-hidden bg-white/55 border border-[#EFD5AE]">
+          <div class="relative aspect-[4/4.6] overflow-hidden">
+            <img src="imgs/boda.jpg" alt="Bodas" class="service-image h-full w-full object-cover">
+            <div class="service-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+              <p class="text-xs uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">01</p>
+              <h3 class="text-2xl font-light">Bodas</h3>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card reveal rounded-[1.8rem] overflow-hidden bg-white/55 border border-[#EFD5AE]">
+          <div class="relative aspect-[4/4.6] overflow-hidden">
+            <img src="imgs/evento1.jpg" alt="Cenas y galas" class="service-image h-full w-full object-cover">
+            <div class="service-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+              <p class="text-xs uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">02</p>
+              <h3 class="text-2xl font-light">Cenas y galas</h3>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card reveal rounded-[1.8rem] overflow-hidden bg-white/55 border border-[#EFD5AE]">
+          <div class="relative aspect-[4/4.6] overflow-hidden">
+            <img src="imgs/evento2.png" alt="Eventos corporativos" class="service-image h-full w-full object-cover">
+            <div class="service-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+              <p class="text-xs uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">03</p>
+              <h3 class="text-2xl font-light">Eventos</h3>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="bg-[#FFF5E5] pb-12 md:pb-20">
+    <div class="container-premium">
+      <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-14">
+        <div>
+          <p class="section-kicker mb-4">Portfolio</p>
+          <h2 class="section-title text-[#1A1A1A]">Momentos recientes sobre el escenario.</h2>
+        </div>
+        <p class="max-w-lg text-black/65 leading-7 font-light">
+          Una selección visual de actuaciones, espacios y escenarios donde la música en directo acompaña la experiencia.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <article class="portfolio-card reveal relative overflow-hidden rounded-[1.8rem] border border-[#EAD1AD] bg-black">
+          <img src="imgs/evento2.png" alt="Concert teatre municipal" class="portfolio-image h-[23rem] w-full object-cover grayscale-[25%]">
+          <div class="portfolio-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="play-badge flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm">
+              <img src="imgs/play.png" alt="Play" class="w-10">
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+            <p class="text-[0.68rem] uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">23 / 05 / 25</p>
+            <h3 class="text-lg font-light leading-snug">Concert teatre municipal</h3>
+          </div>
+        </article>
+
+        <article class="portfolio-card reveal relative overflow-hidden rounded-[1.8rem] border border-[#EAD1AD] bg-black">
+          <img src="imgs/evento2.png" alt="Concert teatre municipal" class="portfolio-image h-[23rem] w-full object-cover grayscale-[25%]">
+          <div class="portfolio-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="play-badge flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm">
+              <img src="imgs/play.png" alt="Play" class="w-10">
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+            <p class="text-[0.68rem] uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">23 / 05 / 25</p>
+            <h3 class="text-lg font-light leading-snug">Concert teatre municipal</h3>
+          </div>
+        </article>
+
+        <article class="portfolio-card reveal relative overflow-hidden rounded-[1.8rem] border border-[#EAD1AD] bg-black">
+          <img src="imgs/evento2.png" alt="Concert teatre municipal" class="portfolio-image h-[23rem] w-full object-cover grayscale-[25%]">
+          <div class="portfolio-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="play-badge flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm">
+              <img src="imgs/play.png" alt="Play" class="w-10">
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+            <p class="text-[0.68rem] uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">23 / 05 / 25</p>
+            <h3 class="text-lg font-light leading-snug">Concert teatre municipal</h3>
+          </div>
+        </article>
+
+        <article class="portfolio-card reveal relative overflow-hidden rounded-[1.8rem] border border-[#EAD1AD] bg-black">
+          <img src="imgs/evento2.png" alt="Concert teatre municipal" class="portfolio-image h-[23rem] w-full object-cover grayscale-[25%]">
+          <div class="portfolio-overlay absolute inset-0 opacity-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="play-badge flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm">
+              <img src="imgs/play.png" alt="Play" class="w-10">
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+            <p class="text-[0.68rem] uppercase tracking-[0.28em] text-[#FFDCA4] mb-2">23 / 05 / 25</p>
+            <h3 class="text-lg font-light leading-snug">Concert teatre municipal</h3>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="bg-[#111111] text-white py-24 md:py-32">
+    <div class="container-premium">
+      <div class="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
+        <div class="reveal max-w-xl">
+          <p class="section-kicker mb-4">Contacto</p>
+          <h2 class="section-title text-white">Una propuesta musical a la altura del evento.</h2>
+          <div class="mt-7 flex gap-3 text-[#EA8F2C]">
+            <span class="h-2 w-2 rounded-full bg-current"></span>
+            <span class="h-2 w-2 rounded-full bg-current opacity-70"></span>
+            <span class="h-2 w-2 rounded-full bg-current opacity-50"></span>
+            <span class="h-2 w-2 rounded-full bg-current opacity-30"></span>
+          </div>
+          <p class="mt-8 text-lg leading-8 text-gray-300 font-light">
+            Si estás buscando música en directo para tu evento, estaré encantado de escucharte.
+            Cuéntame tu idea y trabajaremos una ambientación elegante, sensible y coherente con el momento.
+          </p>
+        </div>
+
+        <div class="contact-card reveal rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 md:p-9 backdrop-blur-sm">
+          <form action="https://formspree.io/f/xzdkdwpz" method="POST" class="space-y-7">
+            <div class="grid md:grid-cols-2 gap-6">
+              <input type="text" name="nombre" placeholder="Tu nombre" required class="form-line w-full bg-transparent border-b border-white/20 py-3.5 text-white placeholder:text-gray-400 focus:outline-none">
+              <input type="email" name="email" placeholder="Tu email" required class="form-line w-full bg-transparent border-b border-white/20 py-3.5 text-white placeholder:text-gray-400 focus:outline-none">
+            </div>
+
+            <textarea name="mensaje" placeholder="Cuéntame tu evento" required rows="5" class="form-line w-full bg-transparent border-b border-white/20 py-3.5 text-white placeholder:text-gray-400 focus:outline-none resize-none"></textarea>
+
+            <button type="submit" class="cta-primary inline-flex w-full items-center justify-center rounded-full border border-[#EA8F2C] bg-[#FFF5E5] px-6 py-4 text-sm tracking-[0.16em] uppercase text-[#1A1A1A]">
+              Enviar solicitud
+            </button>
+            <input type="hidden" name="_next" value="gracias.html">
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black py-12 md:py-14 text-white">
+    <div class="container-premium">
+      <div class="grid gap-10 md:grid-cols-4 border-t border-white/10 pt-10">
+        <div>
+          <h3 class="text-[#EA8F2C] text-lg font-light mb-3">Adonis · Pianista</h3>
+          <p class="text-sm font-light text-gray-300 leading-6">Música en directo para momentos únicos.</p>
+        </div>
+
+        <div>
+          <h3 class="text-[#EA8F2C] text-lg font-light mb-3">Contacto</h3>
+          <div class="space-y-2 text-sm text-gray-300">
+            <div class="flex items-center gap-2">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+              <span>info@adonis.com</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4"></i>
+              <span>+34 600 000 000</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-[#EA8F2C] text-lg font-light mb-3">Redes</h3>
+          <div class="space-y-2 text-sm text-gray-300">
+            <div class="flex items-center gap-2 footer-link">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+              <span>Instagram</span>
+            </div>
+            <div class="flex items-center gap-2 footer-link">
+              <i data-lucide="youtube" class="w-4 h-4"></i>
+              <span>YouTube</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-[#EA8F2C] text-lg font-light mb-3">Menú</h3>
+          <div class="flex flex-col gap-2 text-sm text-gray-300">
+            <a href="#inicio" class="footer-link">Inicio</a>
+            <a href="#actuaciones" class="footer-link">Servicios</a>
+            <a href="#portfolio" class="footer-link">Portfolio</a>
+            <a href="#contacto" class="footer-link">Contacto</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    const navLinks = [...document.querySelectorAll('#mainNav .nav-link')];
+    const sections = [...document.querySelectorAll('section[id]')];
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach((link) => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, {
+      rootMargin: '-35% 0px -45% 0px',
+      threshold: 0.1
+    });
+
+    sections.forEach((section) => sectionObserver.observe(section));
+
+    const revealItems = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: '0px 0px -8% 0px'
+    });
+
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = `${Math.min(index * 60, 240)}ms`;
+      revealObserver.observe(item);
+    });
+
+    const heroImage = document.querySelector('.hero-image');
+    window.addEventListener('scroll', () => {
+      const offset = window.scrollY * 0.08;
+      if (heroImage) {
+        heroImage.style.transform = `scale(1.06) translate3d(0, ${offset}px, 0)`;
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>
